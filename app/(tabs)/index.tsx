@@ -1,4 +1,5 @@
-import { Text, View } from "react-native";
+import { router } from "expo-router";
+import { Pressable, Text, View } from "react-native";
 
 export default function App() {
   return (
@@ -6,6 +7,9 @@ export default function App() {
       <Text className="text-xl font-bold text-blue-500">
         Welcome to Nativewind!
       </Text>
+      <Pressable style={{ marginTop: 20 }} onPress={() => { router.push('/Signup'); }}>
+        <Text>Signup</Text>
+      </Pressable>
     </View>
   );
 }
