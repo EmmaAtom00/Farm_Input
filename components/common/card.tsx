@@ -10,9 +10,7 @@ const card = ({ title, description }: CardProps) => {
         <Ionicons name="checkmark-circle-outline" size={24} color="#16a34a" />
       </View>
       <Text className="text-2xl font-semibold mb-2">{title}</Text>
-      <Text className="text-gray-600 mb-2">
-        {description}
-      </Text>
+      <Text className="text-gray-600 mb-2">{description}</Text>
     </View>
   );
 };
