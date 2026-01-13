@@ -1,17 +1,18 @@
+import { API_CONFIG } from '@/constant/api';
 import styles from '@/constant/styles';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Image, Pressable, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import icon from '../../assets/images/icon.png';
 
-const baseUrl = 'https://farminput-capstone-project.onrender.com'
 const Login = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  
+
   const handleSignin = async () => {
     if (!email || !password) {
       alert('Please fill in all fields.');
@@ -20,7 +21,7 @@ const Login = () => {
 
     setLoading(true);
     try {
-      const response = await fetch(`${baseUrl}/auth/login/`, {
+      const response = await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoints.auth.login}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -53,12 +54,12 @@ const Login = () => {
 
       <View style={styles.accountContainer}>
         <View style={styles.titleView}>
-            <Image style={styles.logo} source={require('../../assets/images/icon.png')} />
-            <Text style={styles.title}>FarmInput</Text>
+          <Image style={styles.logo} source={icon} />
+          <Text style={styles.title}>FarmInput</Text>
         </View>
         <View style={styles.accountView}>
-            <Text style={styles.accountTitle}>Welcome Back</Text>
-            <Text style={styles.accountText}>Sign in to manage your farm inputs</Text>
+          <Text style={styles.accountTitle}>Welcome Back</Text>
+          <Text style={styles.accountText}>Sign in to manage your farm inputs</Text>
         </View>
       </View>
 
@@ -93,8 +94,8 @@ const Login = () => {
       </Pressable>
 
       <Text style={styles.linkText}>
-            Don't have an account?
-            <Text style={styles.link} onPress={handleSignup}>Sign Up</Text> 
+        Don't have an account?
+        <Text style={styles.link} onPress={handleSignup}>Sign Up</Text>
       </Text>
 
     </SafeAreaView>

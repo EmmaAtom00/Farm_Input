@@ -1,7 +1,8 @@
-import Feature from "@/components/common/feature";
-import Step from "@/components/common/step";
+import Feature from "@/components/common/Feature";
+import PurchaseStepsCard from "@/components/common/PurchaseStepsCard";
+import Step from "@/components/common/Step";
 import { Ionicons } from "@expo/vector-icons";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import React from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -24,7 +25,7 @@ const HowItWorksScreen = () => {
           </Text>
         </View>
 
-        <View className="items-center py-12 px-6">
+        <View className="items-center py-12 px-6 bg-white">
           <Text className="text-4xl font-semibold">
             Getting Started is Easy
           </Text>
@@ -103,6 +104,29 @@ const HowItWorksScreen = () => {
           </View>
         </View>
 
+        {/* Placing Orders Made Simple */}
+        <View className="p-6 mt-4">
+          <View className="items-center gap-2 mb-4">
+            <Text className="text-3xl">Placing Orders Made Simple</Text>
+            <Text>Multiple ways to purchase your farm inputs</Text>
+          </View>
+
+          <PurchaseStepsCard
+            iconName="cart-outline"
+            title="Individual Purchases"
+            steps={individualPurchaseSteps}
+          />
+
+          <PurchaseStepsCard
+            iconName="people-outline"
+            title="Group Purchases"
+            subtitle="Save up to 20%"
+            steps={groupPurchaseSteps}
+          />
+
+        </View>
+
+        {/* HOW Deliveries work */}
         <View>
           <Text className="text-2xl font-bold text-gray-900 mt-6">
             How Deliveries Work
@@ -174,7 +198,7 @@ const HowItWorksScreen = () => {
           />
 
           {/* CTA */}
-          <View className="bg-emerald-600 rounded-2xl p-6 mt-8 mb-10">
+          <View className="bg-green-500 rounded-2xl px-6 py-12 mt-8">
             <Text className="text-white text-2xl font-bold text-center">
               Ready to Get Started?
             </Text>
@@ -183,8 +207,8 @@ const HowItWorksScreen = () => {
               smarter
             </Text>
 
-            <View className="flex-row justify-center mt-4 space-x-3">
-              <TouchableOpacity className="bg-white px-5 py-3 rounded-xl">
+            <View className="flex-row justify-center gap-4 mt-4 space-x-3">
+              <TouchableOpacity onPress={() => router.push("/Signup")} className="bg-white px-5 py-3 rounded-xl">
                 <Text className="text-emerald-700 font-semibold">
                   Sign Up Now
                 </Text>
@@ -199,5 +223,65 @@ const HowItWorksScreen = () => {
     </SafeAreaView>
   );
 };
+
+
+
+
+// constants/purchaseSteps.ts
+
+export const individualPurchaseSteps = [
+  {
+    id: 1,
+    title: "Browse Suppliers",
+    description:
+      "Navigate to the Supplier Directory and browse verified suppliers in your region",
+  },
+  {
+    id: 2,
+    title: "Compare Prices",
+    description:
+      "Use the Price Comparison tool to find the best deals across multiple suppliers",
+  },
+  {
+    id: 3,
+    title: "Contact Supplier",
+    description:
+      "Call or message the supplier directly using the contact information provided",
+  },
+  {
+    id: 4,
+    title: "Log Your Purchase",
+    description:
+      "After buying, log the input in the app to track your spending automatically",
+  },
+];
+
+export const groupPurchaseSteps = [
+  {
+    id: 1,
+    title: "Find or Create a Group",
+    description:
+      "Browse existing buying groups or create a new one for your needed input",
+  },
+  {
+    id: 2,
+    title: "Join the Group",
+    description:
+      "Request to join and chat with other members to coordinate the purchase",
+  },
+  {
+    id: 3,
+    title: "Confirm Your Quantity",
+    description:
+      "Specify how much you need and see your discounted price automatically",
+  },
+  {
+    id: 4,
+    title: "Complete Group Order",
+    description:
+      "Once minimum quantity is met, the group order is placed with the supplier",
+  },
+];
+
 
 export default HowItWorksScreen;

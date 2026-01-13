@@ -1,9 +1,8 @@
-import Card from "@/components/common/card";
+import Card from "@/components/common/Card";
 import FarmInputFooter from "@/components/layout/core/Footer";
 import Header from "@/components/layout/core/Header";
-import { NavigationProp } from "@/constant";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useRouter } from "expo-router";
 import React from "react";
 import {
   Image,
@@ -17,23 +16,23 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-const farmInput1 = require("../../assets/images/Farminput1.jpeg");
-const farmInput2 = require("../../assets/images/Farminput2.jpeg");
+import farmInput1 from "../../assets/images/Farminput1.jpeg";
+import farmInput2 from "../../assets/images/Farminput2.jpeg";
 
 const HomeScreen = () => {
-  const router = useNavigation<NavigationProp>();
+  const router = useRouter()
   return (
     <SafeAreaView>
       <KeyboardAvoidingView
         enabled={true}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        // keyboardVerticalOffset={20} // adjust if you have a header
+      // keyboardVerticalOffset={20} // adjust if you have a header
       >
         <ScrollView
           stickyHeaderIndices={[0]}
           keyboardShouldPersistTaps="handled"
         >
-          <Header />
+          <Header onSignUp={() => router.push("/Signup")} />
           <View className="px-4 pt-16 bg-green-100 min-h-[100vh]">
             <Text className="text-7xl py-4">
               Your Complete Agricultural Input Management Solution
@@ -45,14 +44,14 @@ const HomeScreen = () => {
             </Text>
 
             <View className="mt-8 flex-row gap-8">
-              <TouchableOpacity className="bg-green-600 flex-row px-6 py-4 gap-4 rounded-lg w-2/5 items-center">
+              <TouchableOpacity onPress={() => router.push("/Signup")} className="bg-green-600 flex-row px-6 py-4 gap-4 rounded-lg w-2/5 items-center">
                 <Text className="text-white text-xl font-semibold">
                   Get Started
                 </Text>
                 <Ionicons name="arrow-forward" size={12} color="white" />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => router.navigate("HowItWorksScreen")}
+                onPress={() => router.push("/HowItWorksScreen")}
                 className=" px-6 py-4 rounded-lg w-2/5 items-center border-green-600 border"
               >
                 <Text className="text-xl font-semibold">Learn More</Text>
@@ -61,7 +60,7 @@ const HomeScreen = () => {
             <Image
               source={farmInput1}
               className="rounded-lg self-center mt-10 mb-20 w-full h-80"
-              // resizeMode="center"
+            // resizeMode="center"
             />
           </View>
 
