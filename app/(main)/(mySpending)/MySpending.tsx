@@ -1,7 +1,14 @@
-export default function Myspending() {
+import { Text, View } from 'react-native'
+import React, { Component } from 'react'
+
+export class MySpending extends Component {
+  render() {
     return (
-        <div>
-            <h1>Myspending</h1>
-        </div>
-    );
-};
+      <View>
+        <Text>MySpending</Text>
+      </View>
+    )
+  }
+}
+
+export default MySpending

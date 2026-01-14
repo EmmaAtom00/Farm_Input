@@ -1,7 +1,14 @@
-export default function Notification() {
+import { Text, View } from 'react-native'
+import React, { Component } from 'react'
+
+export class Notification extends Component {
+  render() {
     return (
-        <div>
-            <h1>Notification</h1>
-        </div>
-    );
-};
+      <View>
+        <Text>Notification</Text>
+      </View>
+    )
+  }
+}
+
+export default Notification
