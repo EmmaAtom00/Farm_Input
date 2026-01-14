@@ -75,7 +75,12 @@ const styles = StyleSheet.create({
     link: {
       color: 'green',
       marginLeft: 15,
-    }
+    },
+    header: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center"
+    },
    
 });
 

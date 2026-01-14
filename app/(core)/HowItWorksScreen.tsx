@@ -198,7 +198,7 @@ const HowItWorksScreen = () => {
           />
 
           {/* CTA */}
-          <View className="bg-green-500 rounded-2xl px-6 py-12 mt-8">
+          <View className="bg-green-500 rounded-t-2xl px-6 py-12 mt-8">
             <Text className="text-white text-2xl font-bold text-center">
               Ready to Get Started?
             </Text>

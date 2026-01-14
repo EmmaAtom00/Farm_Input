@@ -1,10 +1,11 @@
 import { HeaderProps } from "@/constant";
+import styles from "@/constant/styles";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
 const Header = ({ title = "FarmInput", onSignUp }: HeaderProps) => {
   return (
-    <View className="flex-row items-center justify-between bg-white px-4 py-4 border-b border-gray-200 w-full">
+    <View style={styles.header} className="flex-row items-center justify-between bg-white px-4 py-4 border-b border-gray-200 w-full">
       <Text className="text-xl font-semibold text-green-700">{title}</Text>
       <TouchableOpacity
         onPress={onSignUp}
