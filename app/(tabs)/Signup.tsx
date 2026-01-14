@@ -1,9 +1,9 @@
 import styles from '@/constant/styles';
+import api from '@/services/api';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
-
-const baseUrl = 'https://farminput-capstone-project.onrender.com'
 const Signup = () => {
 
     const [name, setName] = useState('');
@@ -19,28 +19,22 @@ const Signup = () => {
 
         setLoading(true);
         try {
-            const response = await fetch(`${baseUrl}/auth/signup/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name,
-                    email,
-                    password,
-                }),
+            const response = await api.post('/api/auth/signup/', {
+                name,
+                email,
+                password,
             });
 
-            const data = await response.json();
-            
-            if (response.ok) {
-                alert('Account created successfully!');
-                router.push('/Login');
-            } else {
-                alert(data.message || 'Signup failed. Please try again.');
+            const data = response.data;
+            if (data.token) {
+                await AsyncStorage.setItem('token', data.token);
             }
-        } catch (error) {
-            alert('An error occurred. Please check your connection and try again.');
+            console.log('Signup response:', data);
+            alert('Account created successfully!');
+            router.push('/Login');
+        } catch (error: any) {
+            const errorMessage = error.response?.data?.message || 'Signup failed. Please try again.';
+            alert(errorMessage);
             console.error('Signup error:', error);
         } finally {
             setLoading(false);

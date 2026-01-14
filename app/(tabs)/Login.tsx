@@ -1,10 +1,10 @@
 import styles from '@/constant/styles';
+import api from '@/services/api';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Image, Pressable, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-const baseUrl = 'https://farminput-capstone-project.onrender.com'
 const Login = () => {
 
   const [email, setEmail] = useState('');
@@ -20,26 +20,21 @@ const Login = () => {
 
     setLoading(true);
     try {
-      const response = await fetch(`${baseUrl}/auth/login/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
+      await AsyncStorage.removeItem('token');
+      const response = await api.post('/api/auth/login/', {
+        email,
+        password,
       });
 
-      const data = await response.json();
-      if (response.ok) {
-        router.push('/');
-        alert('Signin successful!');
-      } else {
-        alert(data.message || 'Signin failed. Please try again.');
-      }
-    } catch (error) {
-      alert('An error occurred. Please check your connection and try again.');
+      //await AsyncStorage.setItem('token', response.data.access);
+
+      console.log('Signin response:', response.data);
+      alert('Signin successful!');
+      router.push('/');
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || 'Signin failed. Please try again.';
+      alert(errorMessage);
+      console.error('Signin error:', error);
     } finally {
       setLoading(false);
     }
