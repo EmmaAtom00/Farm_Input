@@ -21,12 +21,12 @@ export type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 export interface StepProps {
   title: string;
   description: string;
-  icon: string;
+  icon: string | React.ReactNode;
 }
 
 export interface FeatureProps {
-    title:string;
-    description:string;
+  title: string;
+  description: string;
 }
 
 interface Step {

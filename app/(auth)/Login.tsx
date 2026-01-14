@@ -1,4 +1,4 @@
-import { API_CONFIG } from '@/constant/api';
+import { API_CONFIG, checkOnboardingStatus } from '@/constant/api';
 import styles from '@/constant/styles';
 import { router } from 'expo-router';
 import { useState } from 'react';
@@ -14,30 +14,41 @@ const Login = () => {
 
 
   const handleSignin = async () => {
-    if (!email || !password) {
-      alert('Please fill in all fields.');
-      return;
-    }
+    // if (!email || !password) {
+    //   alert('Please fill in all fields.');
+    //   return;
+    // }
 
     setLoading(true);
     try {
-      const response = await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoints.auth.login}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
+      // const response = await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoints.auth.login}`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({
+      //     email,
+      //     password,
+      //   }),
+      // });
 
-      const data = await response.json();
-      if (response.ok) {
-        router.push('/');
+      // const data = await response.json();
+      if (true) {
         alert('Signin successful!');
+
+        // Check if user has completed onboarding
+        let hasCompletedOnboarding = await checkOnboardingStatus();
+        hasCompletedOnboarding = false
+
+        if (hasCompletedOnboarding) {
+          // Go to dashboard
+          router.replace('/(main)/dashboard');
+        } else {
+          // Go to onboarding
+          router.replace('/(main)/(onboarding)/TrackYourInput');
+        }
       } else {
-        alert(data.message || 'Signin failed. Please try again.');
+        // alert(data.message || 'Signin failed. Please try again.');
       }
     } catch (error) {
       alert('An error occurred. Please check your connection and try again.');

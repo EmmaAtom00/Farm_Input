@@ -1,115 +1,84 @@
 import Feature from "@/components/common/Feature";
+import OnboardingStep from "@/components/common/OnboardingStep";
 import PurchaseStepsCard from "@/components/common/PurchaseStepsCard";
 import Step from "@/components/common/Step";
+import {
+  groupPurchaseSteps,
+  individualPurchaseSteps,
+} from "@/constant/purchaseSteps";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, router } from "expo-router";
 import React from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const HowItWorksScreen = () => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView>
-        <View className="p-6 bg-green-500">
-          <Link href="/" className="flex-row items-center mb-8">
-            <Ionicons name="arrow-back" size={15} color="white" />
-            <Text className="text-xl text-white ml-2">Back to Home</Text>
+    <SafeAreaView style={styles.safe}>
+      <ScrollView contentContainerStyle={styles.scroll}>
+        {/* HERO */}
+        <View style={styles.hero}>
+          <Link href="/" style={styles.backLink}>
+            <Ionicons name="arrow-back" size={16} color="#fff" />
+            <Text style={styles.backText}>Back to Home</Text>
           </Link>
 
-          <Text className="text-6xl font-bold text-white mb-4">
-            How FarmInput Works
-          </Text>
-          <Text className="text-lg text-white">
+          <Text style={styles.heroTitle}>How FarmInput Works</Text>
+          <Text style={styles.heroSubtitle}>
             Your complete guide to using FarmInput
           </Text>
         </View>
 
-        <View className="items-center py-12 px-6 bg-white">
-          <Text className="text-4xl font-semibold">
-            Getting Started is Easy
-          </Text>
-          <Text className="mt-2 text-center text-gray-600">
+        {/* ONBOARDING */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Getting Started is Easy</Text>
+          <Text style={styles.sectionSubtitle}>
             Follow these simple steps to begin your journey
           </Text>
 
-          <View className="mt-14 items-center">
-            <View className="bg-green-200 p-6 rounded-full mb-4">
-              <Ionicons name="phone-portrait-outline" size={24} color="green" />
-            </View>
+          <OnboardingStep
+            step={1}
+            icon="phone-portrait-outline"
+            title="Access the Platform"
+            description='Visit our website and click "Sign In" to access the app'
+          />
 
-            <View className="bg-green-500 rounded-full h-8 w-8 items-center justify-center mb-2">
-              <Text className="text-white font-bold">1</Text>
-            </View>
+          <OnboardingStep
+            step={2}
+            icon="person-add-outline"
+            title="Create Your Account"
+            description="Register with your phone number and complete your profile"
+          />
 
-            <Text className="text-xl font-semibold mb-2">
-              Access the Platform
-            </Text>
-            <Text className="text-center text-gray-600">
-              Visit our website and click "Sign In" to access the
-              mobile-optimized application'
-            </Text>
-          </View>
+          <OnboardingStep
+            step={3}
+            icon="checkmark-circle-outline"
+            title="Complete Onboarding"
+            description="Set preferences and farm details to get started"
+          />
 
-          <View className="mt-14 items-center">
-            <View className="bg-green-200 p-6 rounded-full mb-4">
-              <Ionicons name="person-add-outline" size={24} color="green" />
-            </View>
-
-            <View className="bg-green-500 rounded-full h-8 w-8 items-center justify-center mb-2">
-              <Text className="text-white font-bold">2</Text>
-            </View>
-
-            <Text className="text-xl font-semibold mb-2">
-              Create Your Account
-            </Text>
-            <Text className="text-center text-gray-600">
-              Register with your phone number, verify with OTP, and complete
-              your farmer profile
-            </Text>
-          </View>
-
-          <View className="mt-14 items-center">
-            <View className="bg-green-200 p-6 rounded-full mb-4">
-              <Ionicons name="checkmark-outline" size={24} color="green" />
-            </View>
-
-            <View className="bg-green-500 rounded-full h-8 w-8 items-center justify-center mb-2">
-              <Text className="text-white font-bold">3</Text>
-            </View>
-
-            <Text className="text-xl font-semibold mb-2">
-              Complete Onboarding
-            </Text>
-            <Text className="text-center text-gray-600">
-              Set up your farm details, preferences, and start exploring the
-              platform features
-            </Text>
-          </View>
-
-          <View className="mt-14 items-center">
-            <View className="bg-green-200 p-6 rounded-full mb-4">
-              <Ionicons name="trending-up-outline" size={24} color="green" />
-            </View>
-
-            <View className="bg-green-500 rounded-full h-8 w-8 items-center justify-center mb-2">
-              <Text className="text-white font-bold">4</Text>
-            </View>
-
-            <Text className="text-xl font-semibold mb-2">Start Managing</Text>
-            <Text className="text-center text-gray-600">
-              Begin logging inputs, tracking spending, and joining buying groups
-              to save money
-            </Text>
-          </View>
+          <OnboardingStep
+            step={4}
+            icon="trending-up-outline"
+            title="Start Managing"
+            description="Track inputs, spending, and join buying groups"
+          />
         </View>
 
-        {/* Placing Orders Made Simple */}
-        <View className="p-6 mt-4">
-          <View className="items-center gap-2 mb-4">
-            <Text className="text-3xl">Placing Orders Made Simple</Text>
-            <Text>Multiple ways to purchase your farm inputs</Text>
-          </View>
+        {/* PURCHASE STEPS */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>
+            Placing Orders Made Simple
+          </Text>
+          <Text style={styles.sectionSubtitle}>
+            Multiple ways to purchase your farm inputs
+          </Text>
 
           <PurchaseStepsCard
             iconName="cart-outline"
@@ -123,100 +92,77 @@ const HowItWorksScreen = () => {
             subtitle="Save up to 20%"
             steps={groupPurchaseSteps}
           />
-
         </View>
 
-        {/* HOW Deliveries work */}
-        <View>
-          <Text className="text-2xl font-bold text-gray-900 mt-6">
-            How Deliveries Work
-          </Text>
-          <Text className="text-sm text-gray-500 mt-1 mb-4">
-            Efficient delivery to get inputs when you need them
+        {/* DELIVERY */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>How Deliveries Work</Text>
+          <Text style={styles.sectionSubtitle}>
+            Efficient delivery when you need it
           </Text>
 
-          <View className="bg-emerald-50 rounded-2xl p-4">
+          <View style={styles.deliveryCard}>
             <Step
-              icon="🔔"
+              icon={<Ionicons name="notifications-outline" size={18} />}
               title="Order Confirmation"
-              description="After order placement, you receive confirmation with estimated delivery date and pickup location."
+              description="Receive confirmation and delivery details"
             />
             <Step
-              icon="📦"
+              icon={<Ionicons name="cube-outline" size={18} />}
               title="Order Processing"
-              description="Supplier prepares your order. For group purchases, all member orders are consolidated."
+              description="Supplier prepares and consolidates orders"
             />
             <Step
-              icon="✅"
+              icon={<Ionicons name="checkmark-done-outline" size={18} />}
               title="Pickup / Delivery"
-              description="Collect your inputs from designated pickup point or arrange direct delivery to your farm."
+              description="Collect or receive inputs at your farm"
             />
 
-            <View className="bg-sky-100 rounded-xl p-4 mt-2">
-              <Text className="font-semibold text-sky-700 mb-1">
-                🔔 Stay Updated
+            <View style={styles.infoBox}>
+              <Text style={styles.infoTitle}>
+                <Ionicons name="information-circle-outline" size={16} /> Stay
+                Updated
               </Text>
-              <Text className="text-sm text-sky-800">
-                Track your order status in real-time through the app. Get
-                notifications when your order is ready for pickup and coordinate
-                with other group members for collection.
+              <Text style={styles.infoText}>
+                Track your order in real-time and receive notifications.
               </Text>
             </View>
           </View>
+        </View>
 
-          {/* KEY FEATURES */}
-          <Text className="text-2xl font-bold text-gray-900 mt-8">
-            Key Features
+        {/* FEATURES */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Key Features</Text>
+          <Text style={styles.sectionSubtitle}>
+            Everything you need to manage inputs efficiently
           </Text>
-          <Text className="text-sm text-gray-500 mt-1 mb-4">
-            Everything you need to manage farm inputs efficiently
+
+          <Feature title="Input Logging" description="Track all purchases" />
+          <Feature title="Supplier Directory" description="Verified suppliers" />
+          <Feature title="Spending Analytics" description="Visual insights" />
+          <Feature title="Buying Groups" description="Bulk discounts" />
+          <Feature title="Price Comparison" description="Best deals" />
+          <Feature title="Mobile Access" description="Manage on the go" />
+        </View>
+
+        {/* CTA */}
+        <View style={styles.cta}>
+          <Text style={styles.ctaTitle}>Ready to Get Started?</Text>
+          <Text style={styles.ctaSubtitle}>
+            Join thousands of farmers saving money
           </Text>
 
-          <Feature
-            title="Input Logging"
-            description="Record all purchases with details like quantity, price, supplier, and date for comprehensive tracking."
-          />
-          <Feature
-            title="Supplier Directory"
-            description="Access verified suppliers with ratings, reviews, locations, and contact information."
-          />
-          <Feature
-            title="Spending Analytics"
-            description="View detailed charts and trends of your agricultural spending over time with insights."
-          />
-          <Feature
-            title="Buying Groups"
-            description="Join or create groups with other farmers to access bulk discounts and save money."
-          />
-          <Feature
-            title="Price Comparison"
-            description="Compare prices across regions and suppliers to find the best deals on farm inputs."
-          />
-          <Feature
-            title="Mobile Access"
-            description="Full mobile optimization lets you manage everything on-the-go from your smartphone."
-          />
+          <View style={styles.ctaActions}>
+            <TouchableOpacity
+              style={styles.primaryBtn}
+              onPress={() => router.push("/Signup")}
+            >
+              <Text style={styles.primaryText}>Sign Up Now</Text>
+            </TouchableOpacity>
 
-          {/* CTA */}
-          <View className="bg-green-500 rounded-t-2xl px-6 py-12 mt-8">
-            <Text className="text-white text-2xl font-bold text-center">
-              Ready to Get Started?
-            </Text>
-            <Text className="text-emerald-100 text-center mt-2">
-              Join thousands of farmers already saving money and managing inputs
-              smarter
-            </Text>
-
-            <View className="flex-row justify-center gap-4 mt-4 space-x-3">
-              <TouchableOpacity onPress={() => router.push("/Signup")} className="bg-white px-5 py-3 rounded-xl">
-                <Text className="text-emerald-700 font-semibold">
-                  Sign Up Now
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity className="border border-white px-5 py-3 rounded-xl">
-                <Text className="text-white font-semibold">Learn More</Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity style={styles.secondaryBtn}>
+              <Text style={styles.secondaryText}>Learn More</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
@@ -224,64 +170,137 @@ const HowItWorksScreen = () => {
   );
 };
 
+const styles = StyleSheet.create({
+  safe: { flex: 1, backgroundColor: "#fff" },
+  scroll: { paddingBottom: 0 },
 
+  hero: {
+    backgroundColor: "#22c55e",
+    padding: 24,
+    paddingTop: 16,
+  },
+  backLink: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 24,
+  },
+  backText: {
+    color: "#fff",
+    marginLeft: 8,
+    fontSize: 16,
+    fontWeight: "500",
+  },
+  heroTitle: {
+    fontSize: 36,
+    fontWeight: "700",
+    color: "#fff",
+    marginBottom: 8,
+  },
+  heroSubtitle: {
+    fontSize: 16,
+    color: "#ecfdf5",
+    lineHeight: 24,
+  },
 
+  section: {
+    paddingHorizontal: 20,
+    paddingVertical: 40,
+    borderBottomWidth: 1,
+    borderBottomColor: "#f3f4f6",
+  },
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: "700",
+    textAlign: "center",
+    color: "#1f2937",
+    marginBottom: 8,
+  },
+  sectionSubtitle: {
+    textAlign: "center",
+    color: "#6b7280",
+    marginBottom: 28,
+    fontSize: 15,
+    lineHeight: 22,
+  },
 
-// constants/purchaseSteps.ts
+  deliveryCard: {
+    backgroundColor: "#f0fdf4",
+    padding: 20,
+    borderRadius: 12,
+    marginTop: 20,
+    borderWidth: 1,
+    borderColor: "#dcfce7",
+  },
 
-export const individualPurchaseSteps = [
-  {
-    id: 1,
-    title: "Browse Suppliers",
-    description:
-      "Navigate to the Supplier Directory and browse verified suppliers in your region",
+  infoBox: {
+    backgroundColor: "#f0f9ff",
+    padding: 16,
+    borderRadius: 12,
+    marginTop: 16,
+    borderLeftWidth: 4,
+    borderLeftColor: "#0284c7",
   },
-  {
-    id: 2,
-    title: "Compare Prices",
-    description:
-      "Use the Price Comparison tool to find the best deals across multiple suppliers",
+  infoTitle: {
+    fontWeight: "600",
+    color: "#0369a1",
+    marginBottom: 6,
+    fontSize: 14,
   },
-  {
-    id: 3,
-    title: "Contact Supplier",
-    description:
-      "Call or message the supplier directly using the contact information provided",
+  infoText: {
+    color: "#075985",
+    fontSize: 14,
+    lineHeight: 20,
   },
-  {
-    id: 4,
-    title: "Log Your Purchase",
-    description:
-      "After buying, log the input in the app to track your spending automatically",
-  },
-];
 
-export const groupPurchaseSteps = [
-  {
-    id: 1,
-    title: "Find or Create a Group",
-    description:
-      "Browse existing buying groups or create a new one for your needed input",
+  cta: {
+    backgroundColor: "#22c55e",
+    padding: 32,
+    paddingBottom: 40,
   },
-  {
-    id: 2,
-    title: "Join the Group",
-    description:
-      "Request to join and chat with other members to coordinate the purchase",
+  ctaTitle: {
+    color: "#fff",
+    fontSize: 28,
+    fontWeight: "700",
+    textAlign: "center",
+    marginBottom: 8,
   },
-  {
-    id: 3,
-    title: "Confirm Your Quantity",
-    description:
-      "Specify how much you need and see your discounted price automatically",
+  ctaSubtitle: {
+    color: "#d1fae5",
+    textAlign: "center",
+    marginBottom: 28,
+    fontSize: 16,
+    lineHeight: 24,
   },
-  {
-    id: 4,
-    title: "Complete Group Order",
-    description:
-      "Once minimum quantity is met, the group order is placed with the supplier",
+  ctaActions: {
+    flexDirection: "column",
+    gap: 12,
   },
-];
+  primaryBtn: {
+    backgroundColor: "#fff",
+    paddingHorizontal: 24,
+    paddingVertical: 14,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  primaryText: {
+    color: "#047857",
+    fontWeight: "600",
+    fontSize: 16,
+  },
+  secondaryBtn: {
+    borderWidth: 2,
+    borderColor: "#fff",
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  secondaryText: {
+    color: "#fff",
+    fontWeight: "600",
+    fontSize: 16,
+  },
+});
 
 
 export default HowItWorksScreen;
