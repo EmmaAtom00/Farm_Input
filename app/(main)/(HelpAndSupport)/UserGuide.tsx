@@ -1,14 +1,12 @@
-import { Text, View } from 'react-native'
-import React, { Component } from 'react'
+import { View, Text } from 'react-native'
+import React from 'react'
 
-export class UserGuide extends Component {
-  render() {
-    return (
-      <View>
-        <Text>UserGuide</Text>
-      </View>
-    )
-  }
+const UserGuide = () => {
+  return (
+    <View>
+      <Text>UserGuide</Text>
+    </View>
+  )
 }
 
 export default UserGuide

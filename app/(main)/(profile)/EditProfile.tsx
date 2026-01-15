@@ -1,14 +1,12 @@
-import { Text, View } from 'react-native'
-import React, { Component } from 'react'
+import { View, Text } from 'react-native'
+import React from 'react'
 
-export class EditProfile extends Component {
-  render() {
-    return (
-      <View>
-        <Text>EditProfile</Text>
-      </View>
-    )
-  }
+const EditProfile = () => {
+  return (
+    <View>
+      <Text>EditProfile</Text>
+    </View>
+  )
 }
 
 export default EditProfile

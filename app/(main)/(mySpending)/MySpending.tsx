@@ -1,14 +1,12 @@
-import { Text, View } from 'react-native'
-import React, { Component } from 'react'
+import { View, Text } from 'react-native'
+import React from 'react'
 
-export class MySpending extends Component {
-  render() {
-    return (
-      <View>
-        <Text>MySpending</Text>
-      </View>
-    )
-  }
+const MySpending = () => {
+  return (
+    <View>
+      <Text>MySpending</Text>
+    </View>
+  )
 }
 
 export default MySpending

@@ -1,14 +1,12 @@
-import { Text, View } from 'react-native'
-import React, { Component } from 'react'
+import { View, Text } from 'react-native'
+import React from 'react'
 
-export class TermsOfService extends Component {
-  render() {
-    return (
-      <View>
-        <Text>TermsOfService</Text>
-      </View>
-    )
-  }
+const TermsOfService = () => {
+  return (
+    <View>
+      <Text>TermsOfService</Text>
+    </View>
+  )
 }
 
 export default TermsOfService

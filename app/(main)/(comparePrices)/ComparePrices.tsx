@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const Notification = () => {
+const ComparePrices = () => {
   return (
     <View>
-      <Text>Notification</Text>
+      <Text>ComparePrices</Text>
     </View>
   )
 }
 
-export default Notification
+export default ComparePrices

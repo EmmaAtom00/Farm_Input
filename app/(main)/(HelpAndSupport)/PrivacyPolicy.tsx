@@ -1,14 +1,12 @@
-import { Text, View } from 'react-native'
-import React, { Component } from 'react'
+import { View, Text } from 'react-native'
+import React from 'react'
 
-export class PrivacyPolicy extends Component {
-  render() {
-    return (
-      <View>
-        <Text>PrivacyPolicy</Text>
-      </View>
-    )
-  }
+const PrivacyPolicy = () => {
+  return (
+    <View>
+      <Text>PrivacyPolicy</Text>
+    </View>
+  )
 }
 
 export default PrivacyPolicy
