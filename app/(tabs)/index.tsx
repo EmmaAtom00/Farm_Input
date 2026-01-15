@@ -7,12 +7,7 @@ export default function App() {
       <Text className="text-xl font-bold text-blue-500">
         Welcome to Nativewind!
       </Text>
-      <Pressable
-        style={{ marginTop: 20 }}
-        onPress={() => {
-          router.push("/Signup");
-        }}
-      >
+      <Pressable style={{ marginTop: 20 }} onPress={() => { router.push('/Signup'); }}>
         <Text>Signup</Text>
       </Pressable>
     </View>

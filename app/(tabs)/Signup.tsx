@@ -1,56 +1,49 @@
-import { API_CONFIG } from '@/constant/api';
 import styles from '@/constant/styles';
+import api from '@/services/api';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
-import icon from '../../assets/images/icon.png';
-
 const Signup = () => {
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
-  const handleSignup = async () => {
-    if (!name || !email || !password) {
-      alert('Please fill in all fields.');
-      return;
+    const handleSignup = async () => {
+        if (!name || !email || !password) {
+            alert('Please fill in all fields.');
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const response = await api.post('/api/auth/signup/', {
+                name,
+                email,
+                password,
+            });
+
+            const data = response.data;
+            if (data.token) {
+                await AsyncStorage.setItem('token', data.token);
+            }
+            console.log('Signup response:', data);
+            alert('Account created successfully!');
+            router.push('/Login');
+        } catch (error: any) {
+            const errorMessage = error.response?.data?.message || 'Signup failed. Please try again.';
+            alert(errorMessage);
+            console.error('Signup error:', error);
+        } finally {
+            setLoading(false);
+        }
     }
 
-    setLoading(true);
-    try {
-      const response = await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoints.auth.signup}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        alert('Account created successfully!');
+    const handleLogin = () => {
         router.push('/Login');
-      } else {
-        alert(data.message || 'Signup failed. Please try again.');
-      }
-    } catch (error) {
-      alert('An error occurred. Please check your connection and try again.');
-      console.error('Signup error:', error);
-    } finally {
-      setLoading(false);
     }
-  }
-
-  const handleLogin = () => {
-    router.push('/Login');
-  }
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -64,12 +57,12 @@ const Signup = () => {
       >
         <View style={styles.accountContainer}>
           <View style={styles.titleView}>
-            <Image style={styles.logo} source={icon} />
-            <Text style={styles.title}>FarmInput</Text>
+              <Image style={styles.logo} source={require('../../assets/images/icon.png')} />
+              <Text style={styles.title}>FarmInput</Text>
           </View>
           <View style={styles.accountView}>
-            <Text style={styles.accountTitle}>Create Account</Text>
-            <Text style={styles.accountText}>Tell us about your farm</Text>
+              <Text style={styles.accountTitle}>Create Account</Text>
+              <Text style={styles.accountText}>Tell us about your farm</Text>
           </View>
         </View>
 
@@ -112,8 +105,8 @@ const Signup = () => {
         </Pressable>
 
         <Text style={styles.linkText}>
-          Already have an account?
-          <Text style={styles.link} onPress={handleLogin}>Sign In</Text>
+              Already have an account?
+              <Text style={styles.link} onPress={handleLogin}>Sign In</Text>
         </Text>
       </ScrollView>
     </KeyboardAvoidingView>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Ionicons } from "@expo/vector-icons";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
@@ -41,3 +42,5 @@ export interface PurchaseStepsCardProps {
   subtitle?: string;
   steps: Step[];
 }
+=======
+>>>>>>> 6f868053fa874e197d9234b0f3c92949402bf5d1
