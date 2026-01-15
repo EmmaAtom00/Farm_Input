@@ -1,7 +1,12 @@
-export default function Editprofile() {
-    return (
-        <div>
-            <h1>Editprofile</h1>
-        </div>
-    );
-};
+import { View, Text } from 'react-native'
+import React from 'react'
+
+const EditProfile = () => {
+  return (
+    <View>
+      <Text>EditProfile</Text>
+    </View>
+  )
+}
+
+export default EditProfile
