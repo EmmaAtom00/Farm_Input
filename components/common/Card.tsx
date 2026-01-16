@@ -1,18 +1,59 @@
 import { CardProps } from "@/constant";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 
-const card = ({ title, description }: CardProps) => {
+const Card = ({ title, description }: CardProps) => {
     return (
-        <View className="bg-white p-6 rounded-lg shadow-md items-center">
-            <View className="bg-green-100 w-12 h-12 p-4 rounded-full justify-center items-center mb-4">
-                <Ionicons name="checkmark-circle-outline" size={24} color="#16a34a" />
+        <View style={styles.card}>
+            <View style={styles.iconWrapper}>
+                <Ionicons
+                    name="checkmark-circle-outline"
+                    size={24}
+                    color="#16a34a"
+                />
             </View>
-            <Text className="text-2xl font-semibold mb-2">{title}</Text>
-            <Text className="text-gray-600 mb-2 text-center">{description}</Text>
+            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.description}>{description}</Text>
         </View>
     );
 };
 
-export default card;
+export default Card;
+
+const styles = StyleSheet.create({
+    card: {
+        backgroundColor: "#ffffff",
+        padding: 24,
+        borderRadius: 12,
+        alignItems: "center",
+
+        // shadow (iOS)
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+
+        // shadow (Android)
+        elevation: 4,
+    },
+    iconWrapper: {
+        backgroundColor: "#dcfce7", // green-100
+        width: 48,
+        height: 48,
+        borderRadius: 24,
+        justifyContent: "center",
+        alignItems: "center",
+        marginBottom: 16,
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: "600",
+        marginBottom: 8,
+    },
+    description: {
+        color: "#4b5563", // gray-600
+        marginBottom: 8,
+        textAlign: "center",
+    },
+});

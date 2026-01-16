@@ -1,12 +1,28 @@
+import { SplashScreen } from '@/components/common/SplashScreen';
+import { AuthProvider, useAuth } from '@/context/AuthContext';
 import { Stack } from "expo-router";
 import "./global.css";
 
-export default function RootLayout() {
+function RootLayoutNav() {
+  const { isLoading } = useAuth();
+
+  if (isLoading) {
+    return <SplashScreen />;
+  }
+
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(core)" />
-      <Stack.Screen name="(auth)" />
-      <Stack.Screen name="(main)" />
+      <Stack.Screen name="(core)" options={{ title: "Core" }} />
+      <Stack.Screen name="(auth)" options={{ title: "Auth" }} />
+      <Stack.Screen name="(main)" options={{ title: "Main" }} />
     </Stack>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <AuthProvider>
+      <RootLayoutNav />
+    </AuthProvider>
   );
 }

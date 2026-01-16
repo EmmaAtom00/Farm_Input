@@ -1,4 +1,4 @@
-import { API_CONFIG } from '@/constant/api';
+import { checkOnboardingStatus, saveUserData, signup } from '@/constant/api';
 import styles from '@/constant/styles';
 import { router } from 'expo-router';
 import { useState } from 'react';
@@ -20,23 +20,25 @@ const Signup = () => {
 
     setLoading(true);
     try {
-      const response = await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoints.auth.signup}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-        }),
-      });
+      const data = await signup(name, email, password);
 
-      const data = await response.json();
-
-      if (response.ok) {
+      if (data.success) {
         alert('Account created successfully!');
-        router.push('/Login');
+
+        // Save user data if available
+        if (data.user) {
+          console.log(data.user)
+          await saveUserData(data.user);
+        }
+
+        // Check if user has completed onboarding
+        const hasCompletedOnboarding = await checkOnboardingStatus();
+
+        if (hasCompletedOnboarding) {
+          router.replace('/(main)/(dashboard)/Dashboard');
+        } else {
+          router.replace('/(main)/(onboarding)/TrackYourInput');
+        }
       } else {
         alert(data.message || 'Signup failed. Please try again.');
       }
@@ -49,8 +51,9 @@ const Signup = () => {
   }
 
   const handleLogin = () => {
-    router.push('/Login');
+    router.push('/(auth)/Login');
   }
+
   return (
     <KeyboardAvoidingView
       style={styles.container}

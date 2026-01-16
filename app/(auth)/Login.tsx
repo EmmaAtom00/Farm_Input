@@ -1,5 +1,6 @@
-import { API_CONFIG, checkOnboardingStatus } from '@/constant/api';
+import { checkOnboardingStatus, login, saveUserData } from '@/constant/api';
 import styles from '@/constant/styles';
+import { useAuth } from '@/context/AuthContext';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Image, Pressable, Text, TextInput, View } from 'react-native';
@@ -11,54 +12,52 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-
+  const { refreshAuth } = useAuth();
 
   const handleSignin = async () => {
-    // if (!email || !password) {
-    //   alert('Please fill in all fields.');
-    //   return;
-    // }
+    if (!email || !password) {
+      alert('Please fill in all fields.');
+      return;
+    }
 
     setLoading(true);
     try {
-      // const response = await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoints.auth.login}`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({
-      //     email,
-      //     password,
-      //   }),
-      // });
+      const data = await login(email, password);
 
-      // const data = await response.json();
-      if (true) {
-        alert('Signin successful!');
+      if (data.success) {
+        alert('Sign in successful!');
+
+        // Save user data if available
+        if (data.user) {
+          await saveUserData(data.user);
+        }
+
+        // Refresh auth context to update isSignedIn state
+        await refreshAuth();
 
         // Check if user has completed onboarding
-        let hasCompletedOnboarding = await checkOnboardingStatus();
-        hasCompletedOnboarding = false
+        const hasCompletedOnboarding = await checkOnboardingStatus();
 
         if (hasCompletedOnboarding) {
           // Go to dashboard
-          router.replace('/(main)/dashboard');
+          router.replace('/(main)/(dashboard)/Dashboard');
         } else {
           // Go to onboarding
           router.replace('/(main)/(onboarding)/TrackYourInput');
         }
       } else {
-        // alert(data.message || 'Signin failed. Please try again.');
+        alert(data.message || 'Sign in failed. Please try again.');
       }
     } catch (error) {
       alert('An error occurred. Please check your connection and try again.');
+      console.error('Login error:', error);
     } finally {
       setLoading(false);
     }
   }
 
   const handleSignup = () => {
-    router.push('/Signup');
+    router.push('/(auth)/Signup');
   }
   return (
     <SafeAreaView style={styles.container}>
@@ -100,13 +99,13 @@ const Login = () => {
         />
       </View>
 
-      <Pressable style={styles.button} onPress={handleSignin}>
-        <Text style={styles.buttonText}>{loading ? 'Letting you in...' : 'Sign In'}</Text>
+      <Pressable style={styles.button} onPress={handleSignin} disabled={loading}>
+        <Text style={styles.buttonText}>{loading ? 'Signing in...' : 'Sign In'}</Text>
       </Pressable>
 
       <Text style={styles.linkText}>
         Don't have an account?
-        <Text style={styles.link} onPress={handleSignup}>Sign Up</Text>
+        <Text style={styles.link} onPress={handleSignup}> Sign Up</Text>
       </Text>
 
     </SafeAreaView>
