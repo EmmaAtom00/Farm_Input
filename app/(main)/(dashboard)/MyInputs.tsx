@@ -1,6 +1,8 @@
+import { getInputsList } from '@/constant/api';
 import { Ionicons } from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native';
 import { router } from 'expo-router';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -11,43 +13,66 @@ interface UserInput {
     unit: string;
     cost: number;
     date: string;
+    notes?: string;
 }
 
 const MyInputs = () => {
-    const [userInputs] = useState<UserInput[]>([
-        {
-            id: '1',
-            category: 'Seeds',
-            quantity: 5,
-            unit: 'kg',
-            cost: 2500,
-            date: '2 hours ago',
-        },
-        {
-            id: '2',
-            category: 'Fertilizer',
-            quantity: 10,
-            unit: 'bags',
-            cost: 3500,
-            date: '1 day ago',
-        },
-        {
-            id: '3',
-            category: 'Pesticide',
-            quantity: 2,
-            unit: 'liters',
-            cost: 1500,
-            date: '3 days ago',
-        },
-        {
-            id: '4',
-            category: 'Labor',
-            quantity: 8,
-            unit: 'hours',
-            cost: 4000,
-            date: '1 week ago',
-        },
-    ]);
+    const [userInputs, setUserInputs] = useState<UserInput[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    const fetchInputs = useCallback(async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await getInputsList();
+            if (response.success && response.inputs) {
+                const formattedInputs = response.inputs.map((input: any) => ({
+                    id: input.id || input._id,
+                    category: input.category,
+                    quantity: input.quantity,
+                    unit: input.unit,
+                    cost: input.unit_price || input.cost,
+                    date: formatDate(input.purchase_date || input.date),
+                    notes: input.notes,
+                }));
+                setUserInputs(formattedInputs);
+            } else {
+                setUserInputs([]);
+            }
+        } catch (err) {
+            console.error('Error fetching inputs:', err);
+            setError('Failed to load inputs');
+            setUserInputs([]);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    useFocusEffect(
+        useCallback(() => {
+            fetchInputs();
+        }, [fetchInputs])
+    );
+
+    const formatDate = (dateString: string) => {
+        try {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffMs = now.getTime() - date.getTime();
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+
+            if (diffMins < 60) return `${diffMins} minutes ago`;
+            if (diffHours < 24) return `${diffHours} hours ago`;
+            if (diffDays < 7) return `${diffDays} days ago`;
+            if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+            return date.toLocaleDateString();
+        } catch {
+            return dateString;
+        }
+    };
 
     const renderInput = ({ item }: { item: UserInput }) => (
         <View style={styles.inputCard}>
@@ -56,6 +81,7 @@ const MyInputs = () => {
                 <Text style={styles.inputDetails}>
                     {item.quantity} {item.unit} • ₦{item.cost.toLocaleString()}
                 </Text>
+                {item.notes && <Text style={styles.inputNotes}>{item.notes}</Text>}
                 <Text style={styles.inputDate}>{item.date}</Text>
             </View>
             <Pressable onPress={() => router.push('/(main)/(newInput)/NewInput' as any)}>
@@ -76,7 +102,22 @@ const MyInputs = () => {
                 </Pressable>
             </View>
 
-            {userInputs.length > 0 ? (
+            {loading ? (
+                <View style={styles.loadingState}>
+                    <Text style={styles.loadingText}>Loading inputs...</Text>
+                </View>
+            ) : error ? (
+                <View style={styles.errorState}>
+                    <Ionicons name="alert-circle-outline" size={64} color="#ef4444" />
+                    <Text style={styles.errorText}>{error}</Text>
+                    <Pressable
+                        style={styles.retryButton}
+                        onPress={fetchInputs}
+                    >
+                        <Text style={styles.retryButtonText}>Retry</Text>
+                    </Pressable>
+                </View>
+            ) : userInputs.length > 0 ? (
                 <FlatList
                     data={userInputs}
                     renderItem={renderInput}
@@ -154,9 +195,47 @@ const styles = StyleSheet.create({
         color: '#6b7280',
         marginBottom: 4,
     },
+    inputNotes: {
+        fontSize: 12,
+        color: '#9ca3af',
+        marginBottom: 4,
+        fontStyle: 'italic',
+    },
     inputDate: {
         fontSize: 12,
         color: '#9ca3af',
+    },
+    loadingState: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    loadingText: {
+        fontSize: 16,
+        color: '#6b7280',
+    },
+    errorState: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+    },
+    errorText: {
+        fontSize: 16,
+        color: '#ef4444',
+        marginTop: 12,
+        marginBottom: 20,
+    },
+    retryButton: {
+        backgroundColor: '#ef4444',
+        borderRadius: 8,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+    },
+    retryButtonText: {
+        color: '#fff',
+        fontWeight: '600',
+        fontSize: 14,
     },
     emptyState: {
         flex: 1,

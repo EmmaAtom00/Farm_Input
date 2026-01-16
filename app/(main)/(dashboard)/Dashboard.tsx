@@ -1,8 +1,8 @@
-import { getGroups, getUserData, logout } from '@/constant/api';
+import { getGroups, getInputsList, getUserData, logout } from '@/constant/api';
 import { useAuth } from '@/context/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { router, useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
 import { FlatList, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -35,18 +35,14 @@ interface UserInput {
 const Dashboard = () => {
   const [userName, setUserName] = useState('User');
   const [totalInputs, setTotalInputs] = useState('0');
+  const [monthlySpending, setMonthlySpending] = useState('₦0');
   const [activeGroupsCount, setActiveGroupsCount] = useState('0');
   const [userInputs, setUserInputs] = useState<UserInput[]>([]);
   const { logout: contextLogout } = useAuth();
 
-  useEffect(() => {
-    loadDashboardData();
-  }, []);
-
-  const loadDashboardData = async () => {
+  const loadDashboardData = useCallback(async () => {
     try {
       const userData = await getUserData();
-      console.log(userData)
       if (userData?.name) {
         setUserName(userData.name);
       }
@@ -58,30 +54,50 @@ const Dashboard = () => {
         setActiveGroupsCount(activeGroups.length.toString());
       }
 
-      // Mock user inputs - in production, fetch from API
-      setTotalInputs('12');
-      setUserInputs([
-        {
-          id: '1',
-          category: 'Seeds',
-          quantity: 5,
-          unit: 'kg',
-          cost: 2500,
-          date: '2 hours ago',
-        },
-        {
-          id: '2',
-          category: 'Fertilizer',
-          quantity: 10,
-          unit: 'bags',
-          cost: 3500,
-          date: '1 day ago',
-        },
-      ]);
+      // Fetch real user inputs from API
+      const inputsData = await getInputsList();
+      if (inputsData.success && inputsData.inputs && Array.isArray(inputsData.inputs)) {
+        const inputs = inputsData.inputs;
+
+        // Set total inputs count
+        setTotalInputs(inputs.length.toString());
+
+        // Calculate monthly spending (sum of all input costs)
+        const totalCost = inputs.reduce((sum: number, input: any) => {
+          return sum + (input.unit_price * input.quantity || 0);
+        }, 0);
+        setMonthlySpending(`₦${totalCost.toLocaleString()}`);
+
+        // Transform API data to match UserInput interface and get recent 2
+        const transformedInputs: UserInput[] = inputs.slice(0, 2).map((input: any) => ({
+          id: input.id || Math.random().toString(),
+          category: input.category || 'Unknown',
+          quantity: input.quantity || 0,
+          unit: input.unit || '',
+          cost: input.unit_price * input.quantity || 0,
+          date: input.purchase_date ? new Date(input.purchase_date).toLocaleDateString() : 'Unknown',
+        }));
+
+        setUserInputs(transformedInputs);
+      } else {
+        // Fallback if API fails
+        setTotalInputs('0');
+        setMonthlySpending('₦0');
+        setUserInputs([]);
+      }
     } catch (error) {
       console.error('Error loading dashboard data:', error);
+      setTotalInputs('0');
+      setMonthlySpending('₦0');
+      setUserInputs([]);
     }
-  };
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadDashboardData();
+    }, [loadDashboardData])
+  );
 
   const handleLogout = async () => {
     try {

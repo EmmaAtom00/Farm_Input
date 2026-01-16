@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios, { AxiosInstance } from 'axios';
+import { router } from 'expo-router';
 
 const BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'https://farmerinput-capstoneproject.onrender.com';
 
@@ -34,6 +35,7 @@ axiosInstance.interceptors.response.use(
             // Token expired or invalid
             await clearAuthToken();
             await clearUserData();
+            router.replace("/(auth)/Login")
         }
         return Promise.reject(error);
     }
@@ -266,9 +268,11 @@ export const logInput = async (category: string, quantity: number, unit: string,
             category,
             quantity,
             unit,
-            cost,
-            date,
+            unit_price: cost,
+            purchase_date: date,
             notes,
+            "supplier_id": "{supplier_id}",
+            "input_id": "{input_id}",
         });
         console.log(response)
         return response.data;
@@ -371,6 +375,20 @@ export const getGroupDetail = async (groupId: string) => {
         return {
             success: false,
             message: error.response?.data?.message || 'Failed to fetch group details',
+        };
+    }
+}
+
+// Get user inputs list
+export const getInputsList = async () => {
+    try {
+        const response = await axiosInstance.get(API_CONFIG.endpoints.inputs.list);
+        return response.data;
+    } catch (error: any) {
+        return {
+            success: false,
+            message: error.response?.data?.message || 'Failed to fetch inputs list',
+            inputs: [],
         };
     }
 }
