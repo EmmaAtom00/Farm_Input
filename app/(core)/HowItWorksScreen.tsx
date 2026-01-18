@@ -137,12 +137,50 @@ const HowItWorksScreen = () => {
             Everything you need to manage inputs efficiently
           </Text>
 
-          <Feature title="Input Logging" description="Track all purchases" />
-          <Feature title="Supplier Directory" description="Verified suppliers" />
-          <Feature title="Spending Analytics" description="Visual insights" />
-          <Feature title="Buying Groups" description="Bulk discounts" />
-          <Feature title="Price Comparison" description="Best deals" />
-          <Feature title="Mobile Access" description="Manage on the go" />
+          <View style={styles.featureGrid}>
+            <Feature
+              title="Input Logging"
+              description="Track all purchases"
+              style={styles.feature}
+              titleStyle={styles.featureTitle}
+              descriptionStyle={styles.featureDesc}
+            />
+            <Feature
+              title="Supplier Directory"
+              description="Verified suppliers"
+              style={styles.feature}
+              titleStyle={styles.featureTitle}
+              descriptionStyle={styles.featureDesc}
+            />
+            <Feature
+              title="Spending Analytics"
+              description="Visual insights"
+              style={styles.feature}
+              titleStyle={styles.featureTitle}
+              descriptionStyle={styles.featureDesc}
+            />
+            <Feature
+              title="Buying Groups"
+              description="Bulk discounts"
+              style={styles.feature}
+              titleStyle={styles.featureTitle}
+              descriptionStyle={styles.featureDesc}
+            />
+            <Feature
+              title="Price Comparison"
+              description="Best deals"
+              style={styles.feature}
+              titleStyle={styles.featureTitle}
+              descriptionStyle={styles.featureDesc}
+            />
+            <Feature
+              title="Mobile Access"
+              description="Manage on the go"
+              style={styles.feature}
+              titleStyle={styles.featureTitle}
+              descriptionStyle={styles.featureDesc}
+            />
+          </View>
         </View>
 
         {/* CTA */}
@@ -252,6 +290,38 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
 
+  // ✅ Minimalistic Feature Styling
+  featureGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    gap: 12,
+  },
+  feature: {
+    width: "48%",
+    padding: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#e5e7eb",
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 6,
+    elevation: 2,
+    marginBottom: 12,
+  },
+  featureTitle: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#111827",
+    marginBottom: 4,
+  },
+  featureDesc: {
+    fontSize: 14,
+    color: "#6b7280",
+    lineHeight: 20,
+  },
+
   cta: {
     backgroundColor: "#22c55e",
     padding: 32,
@@ -301,6 +371,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
 
 export default HowItWorksScreen;

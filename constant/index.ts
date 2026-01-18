@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { StyleProp, TextStyle, ViewStyle } from "react-native";
 
 export interface HeaderProps {
   title?: string;
@@ -27,6 +28,9 @@ export interface StepProps {
 export interface FeatureProps {
   title: string;
   description: string;
+  style: ViewStyle;
+  titleStyle:TextStyle;
+   descriptionStyle:TextStyle;
 }
 
 interface Step {
@@ -40,4 +44,14 @@ export interface PurchaseStepsCardProps {
   title: string;
   subtitle?: string;
   steps: Step[];
+}
+
+export interface CreateGroupPayload {
+  groupName: string
+  productName: string
+  maxMembers: number
+  savingsPercent: number
+  totalBags: number
+  targetPrice: number
+  durationDays: number
 }

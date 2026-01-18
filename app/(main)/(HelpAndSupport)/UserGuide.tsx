@@ -1,63 +1,68 @@
-import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const UserGuide = () => {
   const sections = [
     {
-      id: '1',
-      title: 'Getting Started',
-      icon: 'rocket',
+      id: "1",
+      title: "Getting Started",
+      icon: "rocket",
       content: [
-        'Create your account with your email and password',
-        'Complete your profile with farm details',
-        'Set up your preferences for notifications',
+        "Download and open the FarmInput app",
+        "Register using your phone number and receive an OTP",
+        "Enter the 6-digit OTP to log in",
+        "Complete your profile with farm location, crops, and farm size",
+        "Set your State, LGA, and Village from your profile",
       ],
     },
     {
-      id: '2',
-      title: 'Recording Farm Inputs',
-      icon: 'leaf',
+      id: "2",
+      title: "Logging Farm Inputs",
+      icon: "leaf",
       content: [
-        'Go to "Record Input" from the dashboard',
-        'Select the input type (seeds, fertilizer, etc.)',
-        'Enter quantity, unit, and cost',
-        'Add notes for reference',
-        'Your spending is automatically tracked',
+        'Tap "Log New Input" from the dashboard',
+        "Select input category (fertilizer, seeds, pesticides, etc.)",
+        "Enter input name, quantity, unit, and price in Naira (₦)",
+        "Optionally add supplier details and purchase date",
+        "Save the input to track your spending automatically",
       ],
     },
     {
-      id: '3',
-      title: 'Comparing Prices',
-      icon: 'pricetag',
+      id: "3",
+      title: "Viewing Spending & Analysis",
+      icon: "stats-chart",
       content: [
-        'Use the "Compare Prices" feature to find best deals',
-        'Search for specific products or suppliers',
-        'Check ratings and delivery times',
-        'View offers from multiple suppliers',
+        'Open "My Spending" from the dashboard',
+        "View all logged inputs in chronological order",
+        "Filter spending by category or date range",
+        "See total spending breakdown and trends",
+        "Export spending reports for record keeping",
       ],
     },
     {
-      id: '4',
-      title: 'Joining Buying Groups',
-      icon: 'people',
+      id: "4",
+      title: "Finding Suppliers & Comparing Prices",
+      icon: "pricetag",
       content: [
-        'Browse available buying groups',
-        'Check group details and discount rates',
-        'Join groups that match your needs',
-        'Get notifications about group orders',
+        "Browse the Supplier Directory by category or location",
+        "View supplier ratings, products, and price ranges",
+        "Compare regional prices for selected inputs",
+        "Check average prices in your State and LGA",
+        "Identify best-value suppliers before purchasing",
       ],
     },
     {
-      id: '5',
-      title: 'Managing Your Profile',
-      icon: 'person',
+      id: "5",
+      title: "Buying Groups & Notifications",
+      icon: "people",
       content: [
-        'Update your name and email anytime',
-        'View your activity history',
-        'Manage notification preferences',
-        'Logout when done',
+        "Join buying groups based on crop or location",
+        "Participate in bulk purchase opportunities",
+        "Create a buying group and invite other farmers",
+        "Receive alerts for price drops and group updates",
+        "Get notified when minimum order targets are met",
       ],
     },
   ];
@@ -74,9 +79,10 @@ const UserGuide = () => {
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.introCard}>
           <Ionicons name="help-circle" size={32} color="#3b82f6" />
-          <Text style={styles.introTitle}>How to Use FarmInput</Text>
+          <Text style={styles.introTitle}>Welcome to FarmInput</Text>
           <Text style={styles.introText}>
-            Learn how to make the most of FarmInput to manage your farm efficiently
+            Learn how to track farm inputs, manage spending, compare prices, and
+            save money through group purchasing.
           </Text>
         </View>
 
@@ -84,12 +90,13 @@ const UserGuide = () => {
           <View key={section.id} style={styles.section}>
             <View style={styles.sectionHeader}>
               <View
-                style={[
-                  styles.sectionIcon,
-                  { backgroundColor: '#22c55e20' },
-                ]}
+                style={[styles.sectionIcon, { backgroundColor: "#22c55e20" }]}
               >
-                <Ionicons name={section.icon as any} size={20} color="#22c55e" />
+                <Ionicons
+                  name={section.icon as any}
+                  size={20}
+                  color="#22c55e"
+                />
               </View>
               <Text style={styles.sectionTitle}>{section.title}</Text>
             </View>
@@ -106,9 +113,10 @@ const UserGuide = () => {
         <View style={styles.tipsCard}>
           <Ionicons name="bulb" size={24} color="#f59e0b" />
           <View style={{ flex: 1, marginLeft: 12 }}>
-            <Text style={styles.tipsTitle}>Pro Tips</Text>
+            <Text style={styles.tipsTitle}>Helpful Tip</Text>
             <Text style={styles.tipsText}>
-              Regularly update your farm inputs to get accurate spending analytics
+              Keep your inputs updated regularly to get accurate spending
+              insights and better price comparisons.
             </Text>
           </View>
         </View>
@@ -120,22 +128,22 @@ const UserGuide = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: "#f9fafb",
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderBottomWidth: 1,
-    borderBottomColor: '#e5e7eb',
+    borderBottomColor: "#e5e7eb",
   },
   headerTitle: {
     fontSize: 20,
-    fontWeight: '600',
+    fontWeight: "600",
     marginLeft: 12,
-    color: '#1f2937',
+    color: "#1f2937",
   },
   content: {
     paddingHorizontal: 16,
@@ -143,87 +151,87 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   introCard: {
-    backgroundColor: '#eff6ff',
+    backgroundColor: "#eff6ff",
     borderRadius: 12,
     padding: 16,
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 20,
     borderWidth: 1,
-    borderColor: '#bfdbfe',
+    borderColor: "#bfdbfe",
   },
   introTitle: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#1f2937',
+    fontWeight: "600",
+    color: "#1f2937",
     marginTop: 12,
     marginBottom: 8,
   },
   introText: {
     fontSize: 13,
-    color: '#6b7280',
-    textAlign: 'center',
+    color: "#6b7280",
+    textAlign: "center",
   },
   section: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: "#e5e7eb",
   },
   sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 12,
   },
   sectionIcon: {
     width: 36,
     height: 36,
     borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginRight: 12,
   },
   sectionTitle: {
     fontSize: 15,
-    fontWeight: '600',
-    color: '#1f2937',
+    fontWeight: "600",
+    color: "#1f2937",
   },
   contentItem: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginBottom: 10,
   },
   bullet: {
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: '#22c55e',
+    backgroundColor: "#22c55e",
     marginTop: 6,
     marginRight: 10,
   },
   contentText: {
     fontSize: 13,
-    color: '#6b7280',
+    color: "#6b7280",
     flex: 1,
     lineHeight: 18,
   },
   tipsCard: {
-    flexDirection: 'row',
-    backgroundColor: '#fffbeb',
+    flexDirection: "row",
+    backgroundColor: "#fffbeb",
     borderRadius: 12,
     padding: 16,
     borderWidth: 1,
-    borderColor: '#fde68a',
+    borderColor: "#fde68a",
   },
   tipsTitle: {
     fontSize: 14,
-    fontWeight: '600',
-    color: '#92400e',
+    fontWeight: "600",
+    color: "#92400e",
     marginBottom: 4,
   },
   tipsText: {
     fontSize: 12,
-    color: '#b45309',
+    color: "#b45309",
     lineHeight: 16,
   },
 });

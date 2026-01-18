@@ -1,90 +1,308 @@
-import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
-import { useState } from 'react';
-import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
+import { useMemo, useState } from "react";
+import {
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 interface FAQ {
   id: string;
+  type: "header" | "faq";
   question: string;
-  answer: string;
+  answer?: string;
 }
 
 const FAQs = () => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [search, setSearch] = useState<string>("");
 
   const faqs: FAQ[] = [
+    { id: "h1", type: "header", question: "Account & Registration" },
+
     {
-      id: '1',
-      question: 'How do I create an account?',
+      id: "1",
+      type: "faq",
+      question: "How do I create an account?",
       answer:
-        'Download the FarmInput app, tap Sign Up, enter your name, email, and password. Verify your email and complete your profile with farm details.',
+        "Download the FarmInput app, enter your phone number, receive OTP, verify and complete your profile.",
     },
     {
-      id: '2',
-      question: 'How do I record farm inputs?',
+      id: "2",
+      type: "faq",
+      question: "I didn't receive my OTP code. What should I do?",
       answer:
-        'Go to the dashboard and tap "Record Input". Select the input type, enter quantity, unit, and cost. You can add notes for reference. Your spending is automatically tracked.',
+        "Check network, request a new OTP, or contact support if you still don’t receive it.",
     },
     {
-      id: '3',
-      question: 'Can I compare prices from different suppliers?',
+      id: "3",
+      type: "faq",
+      question: "Can I use the app without registering?",
       answer:
-        'Yes! Use the "Compare Prices" feature to search for products and see prices from multiple suppliers. You can filter by rating, delivery time, and availability.',
+        "No. Registration is required to securely save and track your farm inputs and spending.",
     },
     {
-      id: '4',
-      question: 'What are buying groups?',
+      id: "4",
+      type: "faq",
+      question: "How do I change my phone number?",
       answer:
-        'Buying groups are communities of farmers who pool their orders to get bulk discounts. Join groups that match your needs and get notifications about group orders.',
+        "Go to Profile settings, select Change Phone Number, and verify the new number via OTP.",
     },
     {
-      id: '5',
-      question: 'How do I track my spending?',
+      id: "5",
+      type: "faq",
+      question: "Can I delete my account?",
       answer:
-        'Go to "My Spending" to see your total spending, breakdown by category, and recent transactions. This helps you manage your farm budget effectively.',
+        "Yes. Go to Settings > Delete Account. Your data will be removed per our privacy policy.",
+    },
+
+    { id: "h2", type: "header", question: "Logging Inputs" },
+
+    {
+      id: "6",
+      type: "faq",
+      question: "What types of farm inputs can I log?",
+      answer:
+        "You can log seeds, fertilizers, pesticides, equipment, labor, and any other farm input.",
     },
     {
-      id: '6',
-      question: 'Is my data secure?',
+      id: "7",
+      type: "faq",
+      question: "Can I edit or delete a logged input?",
       answer:
-        'Yes, we use industry-standard encryption and security measures to protect your personal and financial information. See our Privacy Policy for more details.',
+        "Yes. Go to My Spending, select the input, and choose Edit or Delete.",
     },
     {
-      id: '7',
-      question: 'How do I reset my password?',
+      id: "8",
+      type: "faq",
+      question: "How do I track inputs bought from multiple suppliers?",
       answer:
-        'On the login screen, tap "Forgot Password", enter your email, and follow the instructions sent to your email to reset your password.',
+        "Add each purchase under its supplier in the log. You can view totals by supplier in spending reports.",
     },
     {
-      id: '8',
-      question: 'Can I edit my profile?',
+      id: "9",
+      type: "faq",
+      question: "Can I add inputs purchased before downloading the app?",
       answer:
-        'Yes, go to your profile settings and tap "Edit Profile" to update your name, email, and other information.',
+        "Yes. Add past purchases manually by selecting the date and entering the details.",
+    },
+
+    { id: "h3", type: "header", question: "Pricing & Spending" },
+
+    {
+      id: "10",
+      type: "faq",
+      question: "How accurate are the regional price comparisons?",
+      answer:
+        "They are based on anonymized aggregated user data and supplier listings to reflect real market trends.",
+    },
+    {
+      id: "11",
+      type: "faq",
+      question: "Why are prices different from what I see locally?",
+      answer:
+        "Prices vary by region, supplier, season, and availability. Use comparisons to find the best option.",
+    },
+    {
+      id: "12",
+      type: "faq",
+      question: "How can I set a budget for farm inputs?",
+      answer:
+        "Use My Spending to set monthly budgets and track your spending against it.",
+    },
+    {
+      id: "13",
+      type: "faq",
+      question: "Can I export my spending data?",
+      answer:
+        "Yes. Go to My Spending and export reports for record keeping and analysis.",
+    },
+
+    { id: "h4", type: "header", question: "Buying Groups" },
+
+    {
+      id: "14",
+      type: "faq",
+      question: "What are buying groups and how do they work?",
+      answer:
+        "Groups pool orders to buy in bulk and access discounts from suppliers.",
+    },
+    {
+      id: "15",
+      type: "faq",
+      question: "How much can I save through buying groups?",
+      answer:
+        "Savings depend on group size and supplier discounts, but can be significant for bulk orders.",
+    },
+    {
+      id: "16",
+      type: "faq",
+      question: "Are buying groups safe?",
+      answer:
+        "Yes. Groups operate through verified members and secure communication in-app.",
+    },
+    {
+      id: "17",
+      type: "faq",
+      question: "How do I join a buying group?",
+      answer: "Go to Buying Groups, browse, select a group, and tap Join.",
+    },
+    {
+      id: "18",
+      type: "faq",
+      question: "Can I create my own buying group?",
+      answer:
+        "Yes. Tap Create Group, add details, set requirements, and invite members.",
+    },
+    {
+      id: "19",
+      type: "faq",
+      question: "What happens if minimum order is not met?",
+      answer:
+        "The group may cancel or reschedule the order. You will be notified in-app.",
+    },
+
+    { id: "h5", type: "header", question: "Suppliers" },
+
+    {
+      id: "20",
+      type: "faq",
+      question: "How are suppliers verified?",
+      answer:
+        "Suppliers are verified through documentation and user ratings before appearing in the directory.",
+    },
+    {
+      id: "21",
+      type: "faq",
+      question: "Can I add a new supplier to the directory?",
+      answer:
+        "Yes. Add supplier details during logging or through Supplier Directory.",
+    },
+    {
+      id: "22",
+      type: "faq",
+      question: "How do I rate a supplier?",
+      answer:
+        "Go to Supplier Profile and submit a rating and review after purchase.",
+    },
+
+    { id: "h6", type: "header", question: "Technical Issues" },
+
+    {
+      id: "23",
+      type: "faq",
+      question: "The app is running slowly. What should I do?",
+      answer:
+        "Clear cache, update the app, or restart your phone. Contact support if it continues.",
+    },
+    {
+      id: "24",
+      type: "faq",
+      question: "My data is not syncing. How do I fix this?",
+      answer:
+        "Check your internet connection, then refresh the app. If still unsynced, contact support.",
+    },
+    {
+      id: "25",
+      type: "faq",
+      question: "I forgot my login details. How do I recover my account?",
+      answer:
+        "Use Forgot Password on the login screen or contact support for help.",
+    },
+    {
+      id: "26",
+      type: "faq",
+      question: "Which phones support the FarmInput app?",
+      answer:
+        "FarmInput supports most Android and iOS devices running recent OS versions.",
+    },
+
+    { id: "h7", type: "header", question: "Privacy & Security" },
+
+    {
+      id: "27",
+      type: "faq",
+      question: "Is my data safe?",
+      answer:
+        "Yes. We use encryption, secure storage, and strict access controls to protect your data.",
+    },
+    {
+      id: "28",
+      type: "faq",
+      question: "Who can see my purchase data?",
+      answer:
+        "Only you and authorized app services. Group members can only see shared group info.",
+    },
+    {
+      id: "29",
+      type: "faq",
+      question: "Can I use the app offline?",
+      answer:
+        "You can log data offline, but syncing and comparisons require internet access.",
+    },
+
+    { id: "h8", type: "header", question: "Still have questions?" },
+    {
+      id: "30",
+      type: "faq",
+      question: "Contact support for personalized assistance.",
+      answer:
+        "Reach us via the Support page in the app or email support@farminput.com",
     },
   ];
 
-  const renderFAQ = ({ item }: { item: FAQ }) => (
-    <Pressable
-      style={styles.faqCard}
-      onPress={() => setExpandedId(expandedId === item.id ? null : item.id)}
-    >
-      <View style={styles.questionContainer}>
-        <Text style={styles.question}>{item.question}</Text>
-        <Ionicons
-          name={expandedId === item.id ? 'chevron-up' : 'chevron-down'}
-          size={20}
-          color="#22c55e"
-        />
-      </View>
+  const filteredFAQs = useMemo(() => {
+    if (!search.trim()) return faqs;
 
-      {expandedId === item.id && (
-        <View style={styles.answerContainer}>
-          <Text style={styles.answer}>{item.answer}</Text>
+    const query = search.toLowerCase();
+
+    return faqs.filter((item) => {
+      if (item.type === "header") {
+        return item.question.toLowerCase().includes(query);
+      }
+      return (
+        item.question.toLowerCase().includes(query) ||
+        (item.answer ?? "").toLowerCase().includes(query)
+      );
+    });
+  }, [search]);
+
+  const renderFAQ = ({ item }: { item: FAQ }) => {
+    if (item.type === "header") {
+      return (
+        <View style={styles.headerCard}>
+          <Text style={styles.headerText}>{item.question}</Text>
         </View>
-      )}
-    </Pressable>
-  );
+      );
+    }
+
+    return (
+      <Pressable
+        style={styles.faqCard}
+        onPress={() => setExpandedId(expandedId === item.id ? null : item.id)}
+      >
+        <View style={styles.questionContainer}>
+          <Text style={styles.question}>{item.question}</Text>
+          <Ionicons
+            name={expandedId === item.id ? "chevron-up" : "chevron-down"}
+            size={20}
+            color="#22c55e"
+          />
+        </View>
+
+        {expandedId === item.id && (
+          <View style={styles.answerContainer}>
+            <Text style={styles.answer}>{item.answer}</Text>
+          </View>
+        )}
+      </Pressable>
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -103,8 +321,18 @@ const FAQs = () => {
         </Text>
       </View>
 
+      <View style={styles.searchContainer}>
+        <Ionicons name="search" size={18} color="#6b7280" />
+        <TextInput
+          value={search}
+          onChangeText={setSearch}
+          placeholder="Search FAQs"
+          style={styles.searchInput}
+        />
+      </View>
+
       <FlatList
-        data={faqs}
+        data={filteredFAQs}
         renderItem={renderFAQ}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContent}
@@ -117,69 +345,97 @@ const FAQs = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: "#f9fafb",
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderBottomWidth: 1,
-    borderBottomColor: '#e5e7eb',
+    borderBottomColor: "#e5e7eb",
   },
   headerTitle: {
     fontSize: 20,
-    fontWeight: '600',
+    fontWeight: "600",
     marginLeft: 12,
-    color: '#1f2937',
+    color: "#1f2937",
   },
   introCard: {
     marginHorizontal: 12,
     marginVertical: 12,
-    backgroundColor: '#fffbeb',
+    backgroundColor: "#fffbeb",
     borderRadius: 12,
     padding: 16,
-    alignItems: 'center',
+    alignItems: "center",
     borderWidth: 1,
-    borderColor: '#fde68a',
+    borderColor: "#fde68a",
   },
   introTitle: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#1f2937',
+    fontWeight: "600",
+    color: "#1f2937",
     marginTop: 12,
     marginBottom: 4,
   },
   introText: {
     fontSize: 12,
-    color: '#6b7280',
-    textAlign: 'center',
+    color: "#6b7280",
+    textAlign: "center",
+  },
+  searchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    marginHorizontal: 12,
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    borderWidth: 1,
+    borderColor: "#e5e7eb",
+    marginBottom: 10,
+  },
+  searchInput: {
+    marginLeft: 8,
+    flex: 1,
+    fontSize: 13,
+    color: "#1f2937",
   },
   listContent: {
     paddingHorizontal: 12,
     paddingVertical: 8,
     paddingBottom: 20,
   },
+  headerCard: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    marginBottom: 8,
+  },
+  headerText: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#1f2937",
+  },
   faqCard: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 12,
     marginBottom: 8,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
-    overflow: 'hidden',
+    borderColor: "#e5e7eb",
+    overflow: "hidden",
   },
   questionContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 14,
   },
   question: {
     fontSize: 14,
-    fontWeight: '600',
-    color: '#1f2937',
+    fontWeight: "600",
+    color: "#1f2937",
     flex: 1,
     marginRight: 12,
   },
@@ -187,12 +443,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 14,
     borderTopWidth: 1,
-    borderTopColor: '#e5e7eb',
-    backgroundColor: '#f9fafb',
+    borderTopColor: "#e5e7eb",
+    backgroundColor: "#f9fafb",
   },
   answer: {
     fontSize: 13,
-    color: '#6b7280',
+    color: "#6b7280",
     lineHeight: 20,
   },
 });

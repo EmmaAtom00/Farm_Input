@@ -20,7 +20,7 @@ export default function JoinBuyingGroups() {
         setIsLoading(true);
         try {
             await completeOnboarding();
-            router.replace("/(main)/dashboard");
+            router.replace("/(main)/(dashboard)/Dashboard");
         } catch (error) {
             console.error("Error completing onboarding:", error);
             setIsLoading(false);
@@ -83,7 +83,7 @@ export default function JoinBuyingGroups() {
 
                     <TouchableOpacity
                         style={styles.skipButton}
-                        onPress={() => router.push("/(core)")}
+                        onPress={() => router.push("/(main)/(dashboard)/Dashboard")}
                         disabled={isLoading}
                     >
                         <Text style={styles.skipButtonText}>Skip for now</Text>

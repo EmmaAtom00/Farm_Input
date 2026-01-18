@@ -62,7 +62,7 @@ export default function TrackYourInput() {
 
                     <TouchableOpacity
                         style={styles.skipButton}
-                        onPress={() => router.push("/(core)")}
+                        onPress={() => router.push("/(main)/(dashboard)/Dashboard")}
                     >
                         <Text style={styles.skipButtonText}>Skip for now</Text>
                     </TouchableOpacity>
