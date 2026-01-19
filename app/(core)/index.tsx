@@ -100,7 +100,7 @@ const HomeScreen = () => {
               style={{
                 backgroundColor: "#16a34a",
                 flexDirection: "row",
-                paddingHorizontal: 24,
+                paddingHorizontal: 20,
                 paddingVertical: 16,
                 gap: 16,
                 borderRadius: 8,
@@ -109,7 +109,7 @@ const HomeScreen = () => {
                 justifyContent: "center",
               }}
             >
-              <Text style={{ color: "white", fontSize: 18, fontWeight: "600" }}>
+              <Text style={{ color: "white", fontSize: 14, fontWeight: "600" }}>
                 Get Started
               </Text>
               <Ionicons name="arrow-forward" size={12} color="white" />
@@ -118,7 +118,7 @@ const HomeScreen = () => {
             <TouchableOpacity
               onPress={() => router.push("/(core)/HowItWorksScreen")}
               style={{
-                paddingHorizontal: 24,
+                paddingHorizontal: 20,
                 paddingVertical: 16,
                 borderRadius: 8,
                 width: "40%",
@@ -128,7 +128,7 @@ const HomeScreen = () => {
                 borderColor: "#16a34a",
               }}
             >
-              <Text style={{ fontSize: 18, fontWeight: "600" }}>
+              <Text style={{ fontSize: 14, fontWeight: "600" }}>
                 Learn More
               </Text>
             </TouchableOpacity>
@@ -180,11 +180,11 @@ const HomeScreen = () => {
                 backgroundColor: "white",
                 flexDirection: "row",
                 marginTop: 16,
-                paddingHorizontal: 24,
+                paddingHorizontal: 20,
                 paddingVertical: 12,
                 gap: 16,
                 borderRadius: 8,
-                width: "50%",
+                width: "60%",
                 alignItems: "center",
                 justifyContent: "center",
               }}
@@ -192,7 +192,7 @@ const HomeScreen = () => {
               <Text
                 style={{
                   color: "#16a34a",
-                  fontSize: 18,
+                  fontSize: 14,
                   fontWeight: "600",
                 }}
               >

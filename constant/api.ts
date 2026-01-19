@@ -2,6 +2,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios, { AxiosInstance } from "axios";
 import { router } from "expo-router";
 
+let onUnauthorized: (() => void) | null = null;
+
+export const setUnauthorizedHandler = (handler: () => void) => {
+  onUnauthorized = handler;
+};
+
 const BASE_URL =
   process.env.EXPO_PUBLIC_API_URL ||
   "https://farminput-capstone-project-1dbl.onrender.com";
@@ -28,10 +34,10 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response?.status === 401) {
+    if (error?.status === 401) {
       await clearAuthToken();
       await clearUserData();
-      router.replace("/(auth)/Login");
+      onUnauthorized?.();
     }
     return Promise.reject(error);
   },
@@ -167,7 +173,7 @@ export const login = async (email: string, password: string) => {
     return { ...response.data, userData };
   } catch (error: any) {
     console.log(error);
-    
+
     return {
       success: false,
       message: error.response?.data?.message || "Login failed",

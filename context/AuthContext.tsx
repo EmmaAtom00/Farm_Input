@@ -1,6 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import {
+  logout as apiLogout,
+  getAuthToken,
+  setUnauthorizedHandler,
+} from "@/constant/api";
 import { useRouter } from "expo-router";
-import { getAuthToken, logout as apiLogout } from "@/constant/api";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 type AuthContextType = {
   loading: boolean;
@@ -28,6 +32,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setSignedIn(!!token);
       setLoading(false);
     }
+    setUnauthorizedHandler(() => {
+      setSignedIn(false);
+    });
     checkAuth();
   }, []);
 
