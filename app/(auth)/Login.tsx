@@ -31,14 +31,18 @@ const Login = () => {
           await saveUserData(data.userData.user);
         }
 
-        // Check onboarding
-        const hasCompletedOnboarding = await checkOnboardingStatus();
+        // // Check onboarding
+        // const hasCompletedOnboarding = await checkOnboardingStatus();
+        // console.log(hasCompletedOnboarding);
+        
 
-        if (hasCompletedOnboarding) {
-          router.replace("/(main)/(dashboard)/Dashboard");
-        } else {
-          router.replace("/(main)/(onboarding)/TrackYourInput");
-        }
+        // if (hasCompletedOnboarding) {
+        //   // router.replace("/(main)/(dashboard)/Dashboard");
+        // } 
+        // else {
+        //   console.log("here at onboard");
+        //   router.replace("/(main)/(onboarding)/TrackYourInput");
+        // }
       } else {
         alert(data.message || "Sign in failed. Please try again.");
       }

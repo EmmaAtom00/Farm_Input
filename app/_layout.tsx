@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from "@/context/AuthContext";
 import { Stack, useRouter, useSegments } from "expo-router";
 import { useEffect } from "react";
 import "./global.css";
+import { checkOnboardingStatus } from "@/constant/api";
 
 function RootLayoutNav() {
   const { loading, signedIn } = useAuth();
@@ -13,7 +14,6 @@ function RootLayoutNav() {
     if (loading) return;
 
     const rootSegment = segments[0]; // "(main)", "(auth)", "(core)"
-
     const inMain = rootSegment === "(main)";
     const inAuth = rootSegment === "(auth)";
 
@@ -25,10 +25,26 @@ function RootLayoutNav() {
 
     // Signed in → block auth screens
     if (signedIn && inAuth) {
-      router.replace("/(main)/(dashboard)/Dashboard");
-      return;
+      const handleOnboardingRedirect = async () => {
+        try {
+          const hasCompletedOnboarding = await checkOnboardingStatus();
+          // console.log("Onboarding completed:", hasCompletedOnboarding);
+
+          if (hasCompletedOnboarding) {
+            router.replace("/(main)/(dashboard)/Dashboard");
+          } else {
+            router.replace("/(main)/(onboarding)/TrackYourInput");
+          }
+        } catch (error) {
+          console.error("Error checking onboarding status:", error);
+          // fallback route if API fails
+          router.replace("/(main)/(dashboard)/Dashboard");
+        }
+      };
+
+      handleOnboardingRedirect();
     }
-  }, [loading, signedIn, segments]);
+  }, [loading, signedIn, segments, router]);
 
   if (loading) {
     return <SplashScreen />;
